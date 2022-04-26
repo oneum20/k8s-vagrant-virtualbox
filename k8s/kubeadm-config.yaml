@@ -1,9 +1,0 @@
-kind: ClusterConfiguration
-apiVersion: kubeadm.k8s.io/v1beta2
-kubernetesVersion: $KUBE_VERSION
----
-kind: KubeletConfiguration
-apiVersion: kubelet.config.k8s.io/v1beta1
-cgroupDriver: cgroupfs
-address: $IP_ADDR
-podCIDR: 10.244.0.0/16
