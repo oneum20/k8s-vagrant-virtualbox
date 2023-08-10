@@ -5,6 +5,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :shell, path: "bootstrap-common.sh"
 
+  number_of_nodes = 3
+
   
   config.vm.define "master" do |master|
     ip_addr = "192.168.1.1"
@@ -24,19 +26,23 @@ Vagrant.configure("2") do |config|
   end
 
   
-  config.vm.define "node01" do |node01|
-    ip_addr = "192.168.1.2"
-    
-    node01.vm.provider :virtualbox do |vb|
-      vb.cpus = 2
-      vb.memory = 2048
+  (1..number_of_nodes).each do |n|
+    config.vm.define "node-#{n}" do |node|
+      ip_addr = "192.168.1.1#{n}"
+      
+      node.vm.provider :virtualbox do |vb|
+        vb.cpus = 2
+        vb.memory = 4096
+      end
+  
+      node.vm.network "private_network", ip: "#{ip_addr}", virtualbox__intnet: true
+      node.vm.hostname = "node#{n}"      
+  
+      node.vm.provision :shell, path: "bootstrap-node.sh", env: {"IP_ADDR" => "#{ip_addr}", "KUBE_VERSION" => "#{k8s_version}"}
+  
     end
-
-    node01.vm.network "private_network", ip: "#{ip_addr}", virtualbox__intnet: true
-    node01.vm.hostname = "node01"
-
-    node01.vm.provision :shell, path: "bootstrap-node.sh", env: {"IP_ADDR" => "#{ip_addr}", "KUBE_VERSION" => "#{k8s_version}"}
-
   end
+  
+  
 
 end
