@@ -22,10 +22,14 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-export KUBECONFIG=/etc/kubernetes/admin.conf
+DEFAULT_USER=vagrant
+DEFAULT_USER_HOME=/home/$DEFAULT_USER
+mkdir -p $DEFAULT_USER_HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $DEFAULT_USER_HOME/.kube/config
+sudo chown -R $(id -u $DEFAULT_USER):$(id -g $DEFAULT_USER) $DEFAULT_USER_HOME/.kube
 
 # install CNI
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
 
 # join cmd
 rm -f /vagrant/join-command && \
