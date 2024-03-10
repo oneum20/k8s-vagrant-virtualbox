@@ -27,3 +27,9 @@ cat <<EOF > /etc/docker/daemon.json
 }
 EOF
 sudo systemctl restart docker
+
+# Install cri-dockerd
+curl -OL https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.11/cri-dockerd_0.3.11.3-0.ubuntu-focal_amd64.deb
+sudo dpkg -i cri-dockerd_0.3.11.3-0.ubuntu-focal_amd64.deb
+sudo systemctl enable cri-docker.service
+sudo systemctl enable --now cri-docker.socket

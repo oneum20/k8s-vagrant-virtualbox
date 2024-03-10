@@ -1,9 +1,10 @@
 Vagrant.configure("2") do |config|
-  k8s_version='1.23.0-00'
+  k8s_version='v1.29'
 
-  config.vm.box = "hashicorp/bionic64"  
+  config.vm.box = "ubuntu/focal64"  
 
   config.vm.provision :shell, path: "bootstrap-common.sh"
+  
 
   number_of_nodes = 3
 
@@ -16,7 +17,7 @@ Vagrant.configure("2") do |config|
       vb.memory = 2048
     end
 
-
+    master.vm.network "public_network", bridge: "eth0"
     master.vm.network "private_network", ip: "#{ip_addr}", virtualbox__intnet: true
     master.vm.hostname = "master"
 
