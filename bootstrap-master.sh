@@ -37,4 +37,4 @@ kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/we
 # join cmd
 rm -f /vagrant/join-command && \
 kubeadm token create --print-join-command > /vagrant/join-command && \
-sed -i 's|$|  --cri-socket "unix:///var/run/cri-dockerd.sock"|' join-command
+sed -i 's|$| --cri-socket "unix:///var/run/cri-dockerd.sock"|' /vagrant/join-command
