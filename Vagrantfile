@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
       vb.memory = 2048
     end
 
-    master.vm.network "public_network", bridge: "eth0"
+    node.vm.network "forwarded_port", guest: 30000, host: 60000 + n, auto_correct: false
     master.vm.network "private_network", ip: "#{ip_addr}", virtualbox__intnet: true
     master.vm.hostname = "master"
 
